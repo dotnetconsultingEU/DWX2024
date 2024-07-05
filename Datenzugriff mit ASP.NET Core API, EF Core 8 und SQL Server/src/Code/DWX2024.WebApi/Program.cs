@@ -1,15 +1,28 @@
 using DWX2024.AppLogic;
 using DWX2024.AppLogic.EntityFramework;
 using DWX2024.Infrastructure.Interfaces;
+using DWX2024.WebApi.Code.ApiKey;
 using DWX2024.WebApi.Code.ExceptionHandler;
 using Microsoft.EntityFrameworkCore;
+using NLog.Web;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+#region API key
+IConfigurationSection apiKeyConfigurationSection = builder.Configuration.GetSection("ApiKey");
+builder.Services.Configure<ApiKeySettings>(apiKeyConfigurationSection);
+
+ApiKeySettings apiKeySettings = new();
+apiKeyConfigurationSection.Bind(apiKeySettings);
+#endregion
+
 builder.Services.AddControllers(o=>
 {
+    if (apiKeySettings.ProtectWithApiKey)
+        o.Filters.Add(new ApiKeyFilter(apiKeySettings));
+
     o.Filters.Add(new UserExceptionHandler());
     o.Filters.Add(new ArgumentOutOfRangeExceptionHandler());
     o.Filters.Add(new TaskCanceledExceptionHandler());
@@ -29,6 +42,19 @@ builder.Services.AddDbContextPool<dncUserDatabaseContext>(o =>
 });
 #endregion
 
+
+#region Nlog
+string nlogConfigFileName = Path.Combine(AppContext.BaseDirectory, "nlog.config");
+if (File.Exists(nlogConfigFileName))
+{
+    builder.Services.AddLogging(b =>
+    {
+        b.AddNLog(nlogConfigFileName);
+        builder.WebHost.UseNLog();
+        builder.Host.UseNLog();
+    });
+}
+#endregion
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

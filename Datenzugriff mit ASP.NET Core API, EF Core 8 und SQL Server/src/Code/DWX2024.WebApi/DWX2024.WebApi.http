@@ -1,15 +1,18 @@
 @DWX2024WebApiHostAddress = http://localhost:5156
-
+@xapikey = 3qfOpxieG7
 
 GET {{DWX2024WebApiHostAddress}}/usermanagement/AllUsers
 Accept: application/json
+x-api-key: {{xapikey}}
 
 ### Request 2
 
 GET {{DWX2024WebApiHostAddress}}/usermanagement/User?UNumber=abc
 Accept: application/json
+x-api-key: {{xapikey}}
 
 ### Request 3
 
-GET {{DWX2024WebApiHostAddress}}/usermanagement/User?UNumber=abc
+GET {{DWX2024WebApiHostAddress}}/usermanagement/User?UNumber=dnc000004
 Accept: application/json
+x-api-key: {{xapikey}}
