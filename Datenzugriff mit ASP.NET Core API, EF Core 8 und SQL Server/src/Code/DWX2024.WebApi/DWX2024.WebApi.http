@@ -1,7 +1,8 @@
 @DWX2024WebApiHostAddress = http://localhost:5156
 
 
-GET {{DWX2024WebApiHostAddress}}/weatherforecast/
+GET {{DWX2024WebApiHostAddress}}/usermanagement/AllUsers
 Accept: application/json
 
 ### Request 2
+

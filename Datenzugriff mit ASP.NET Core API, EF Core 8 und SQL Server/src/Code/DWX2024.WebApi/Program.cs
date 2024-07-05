@@ -1,5 +1,7 @@
 using DWX2024.AppLogic;
+using DWX2024.AppLogic.EntityFramework;
 using DWX2024.Infrastructure.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +12,16 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IAppLogic, LogicV1>();
+
+#region EF Core
+builder.Services.AddDbContextPool<dncUserDatabaseContext>(o =>
+{
+    string conString = builder.Configuration.GetConnectionString("Main")!;
+    o.UseSqlServer(conString);
+    o.EnableSensitiveDataLogging(true);
+    o.LogTo(Console.WriteLine, LogLevel.Information);
+});
+#endregion
 
 var app = builder.Build();
 

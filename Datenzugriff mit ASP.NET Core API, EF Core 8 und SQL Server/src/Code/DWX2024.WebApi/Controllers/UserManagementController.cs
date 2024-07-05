@@ -8,7 +8,7 @@ namespace DWX2024.WebApi.Controllers
     [ApiController]
     [Route("[controller]")]
     public class UserManagementController(IAppLogic appLogic,
-                                           ILogger<UserManagementController> logger) : ControllerBase
+                                          ILogger<UserManagementController> logger) : ControllerBase
     {
         private readonly IAppLogic appLogic = appLogic;
         private readonly ILogger<UserManagementController> logger = logger;
@@ -21,12 +21,12 @@ namespace DWX2024.WebApi.Controllers
         [HttpGet("AllUsers")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [SwaggerResponse(StatusCodes.Status200OK, "OK", typeof(IEnumerable<UserDto>))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [SwaggerResponse(StatusCodes.Status400BadRequest, "Specific error. See details.", typeof(UserErrorDetails))]
+        //[ProducesResponseType(StatusCodes.Status400BadRequest)]
+        //[SwaggerResponse(StatusCodes.Status400BadRequest, "Specific error. See details.", typeof(UserErrorDetails))]
         public async Task<ActionResult<IEnumerable<UserDto>>> FetchAllUsers(CancellationToken cancellationToken = default)
         {
             var result = await appLogic.FetchAllUsersAsync(cancellationToken);
-
+            
             return Ok(result);
         }
     }
