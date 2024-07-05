@@ -1,13 +1,19 @@
 using DWX2024.AppLogic;
 using DWX2024.AppLogic.EntityFramework;
 using DWX2024.Infrastructure.Interfaces;
+using DWX2024.WebApi.Code.ExceptionHandler;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers(o=>
+{
+    o.Filters.Add(new UserExceptionHandler());
+    o.Filters.Add(new ArgumentOutOfRangeExceptionHandler());
+    o.Filters.Add(new TaskCanceledExceptionHandler());
+});
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

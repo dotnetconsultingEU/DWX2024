@@ -6,3 +6,10 @@ Accept: application/json
 
 ### Request 2
 
+GET {{DWX2024WebApiHostAddress}}/usermanagement/User?UNumber=abc
+Accept: application/json
+
+### Request 3
+
+GET {{DWX2024WebApiHostAddress}}/usermanagement/User?UNumber=abc
+Accept: application/json
